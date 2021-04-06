@@ -2,9 +2,9 @@
   class Database {
     // DB Params
     private $host = 'localhost';
-    private $db_name = 'myblog';
+    private $db_name = 'java_project';
     private $username = 'root';
-    private $password = '';
+    private $password = 'root';
     private $conn;
 
     // DB Connect

@@ -6,21 +6,21 @@
   header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
   include_once '../../config/Database.php';
-  include_once '../../models/Category.php';
+  include_once '../../models/Book.php';
   // Instantiate DB & connect
   $database = new Database();
   $db = $database->connect();
 
   // Instantiate blog post object
-  $category = new Category($db);
+  $book = new Book($db);
 
   // Get raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  $category->name = $data->name;
+  $book->name = $data->name;
 
   // Create Category
-  if($category->create()) {
+  if($book->create()) {
     echo json_encode(
       array('message' => 'Category Created')
     );
