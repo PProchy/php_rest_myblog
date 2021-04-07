@@ -1,34 +1,29 @@
-<?php 
-  // Headers
-  header('Access-Control-Allow-Origin: *');
-  header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: DELETE');
-  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
+<?php
+// Headers
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: DELETE');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-  include_once '../../config/Database.php';
-  include_once '../../models/User.php';
+include_once '../../config/Database.php';
+include_once '../../models/User.php';
 
-  // Instantiate DB & connect
-  $database = new Database();
-  $db = $database->connect();
+$database = new Database();
+$db = $database->connect();
 
-  // Instantiate blog post object
-  $user = new User($db);
+$user = new User($db);
 
-  // Get raw posted data
-  $data = json_decode(file_get_contents("php://input"));
+$data = json_decode(file_get_contents("php://input"));
 
-  // Set ID to update
-  $user->id = $data->id;
+$user->id = $data->id;
 
-  // Delete post
-  if($user->delete()) {
+if ($user->delete()) {
     echo json_encode(
-      array('message' => 'Post Deleted')
+        array('message' => 'Uživatel smazán.')
     );
-  } else {
+} else {
     echo json_encode(
-      array('message' => 'Post Not Deleted')
+        array('message' => 'Někde se stala chyba. Uživatel nesmazán')
     );
-  }
+}
 

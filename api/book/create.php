@@ -1,31 +1,31 @@
 <?php
-  // Headers
-  header('Access-Control-Allow-Origin: *');
-  header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: POST');
-  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
+// Headers
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
-  include_once '../../config/Database.php';
-  include_once '../../models/Book.php';
-  // Instantiate DB & connect
-  $database = new Database();
-  $db = $database->connect();
+include_once '../../config/Database.php';
+include_once '../../models/Book.php';
 
-  // Instantiate blog post object
-  $book = new Book($db);
+$database = new Database();
+$db = $database->connect();
 
-  // Get raw posted data
-  $data = json_decode(file_get_contents("php://input"));
+$book = new Book($db);
 
-  $book->name = $data->name;
+$data = json_decode(file_get_contents("php://input"));
 
-  // Create Category
-  if($book->create()) {
+$book->name = $data->name;
+$book->pages = $data->pages;
+$book->is_borrowed = $data->is_borrowed;
+$book->user_id = $data->user_id;
+
+if ($book->create()) {
     echo json_encode(
-      array('message' => 'Category Created')
+        array('message' => 'Kniha vytvořena.')
     );
-  } else {
+} else {
     echo json_encode(
-      array('message' => 'Category Not Created')
+        array('message' => 'Někde se stala chyba. Kniha nevytvořena.')
     );
-  }
+}

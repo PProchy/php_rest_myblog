@@ -1,39 +1,32 @@
-<?php 
-  // Headers
-  header('Access-Control-Allow-Origin: *');
-  header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: PUT');
-  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
+<?php
+// Headers
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: PUT');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-  include_once '../../config/Database.php';
-  include_once '../../models/User.php';
+include_once '../../config/Database.php';
+include_once '../../models/User.php';
 
-  // Instantiate DB & connect
-  $database = new Database();
-  $db = $database->connect();
+$database = new Database();
+$db = $database->connect();
 
-  // Instantiate blog post object
-  $user = new User($db);
+$user = new User($db);
+$data = json_decode(file_get_contents("php://input"));
 
-  // Get raw posted data
-  $data = json_decode(file_get_contents("php://input"));
+$user->id = $data->id;
+$user->name = $data->name;
+$user->surname = $data->surname;
+$user->birth = $data->birth;
+$user->address_id = $data->address_id;
 
-  // Set ID to update
-  $user->id = $data->id;
-
-  $user->title = $data->title;
-  $user->body = $data->body;
-  $user->author = $data->author;
-  $user->category_id = $data->category_id;
-
-  // Update post
-  if($user->update()) {
+if ($user->update()) {
     echo json_encode(
-      array('message' => 'Post Updated')
+        array('message' => 'Uživatel upraven.')
     );
-  } else {
+} else {
     echo json_encode(
-      array('message' => 'Post Not Updated')
+        array('message' => 'Někde se stala chyba. Uživatel nebyl upraven.')
     );
-  }
+}
 

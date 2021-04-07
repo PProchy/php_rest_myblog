@@ -1,33 +1,24 @@
-<?php 
-  // Headers
-  header('Access-Control-Allow-Origin: *');
-  header('Content-Type: application/json');
+<?php
+// Headers
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
 
-  include_once '../../config/Database.php';
-  include_once '../../models/User.php';
+include_once '../../config/Database.php';
+include_once '../../models/User.php';
 
-  // Instantiate DB & connect
-  $database = new Database();
-  $db = $database->connect();
+$database = new Database();
+$db = $database->connect();
 
-  // Instantiate blog post object
-  $user = new User($db);
+$user = new User($db);
+$user->id = isset($_GET['id']) ? $_GET['id'] : die();
+$user->read_single();
 
-  // Get ID
-  $user->id = isset($_GET['id']) ? $_GET['id'] : die();
-
-  // Get post
-  $user->read_single();
-
-  // Create array
-  $user_arr = array(
+$user_arr = array(
     'id' => $user->id,
-    'title' => $user->title,
-    'body' => $user->body,
-    'author' => $user->author,
-    'category_id' => $user->category_id,
-    'category_name' => $user->category_name
-  );
+    'name' => $user->name,
+    'surname' => $user->surname,
+    'birth' => $user->birth,
+    'address_id' => $user->address_id
+);
 
-  // Make JSON
-  print_r(json_encode($user_arr));
+print_r(json_encode($user_arr));
